@@ -1,0 +1,13 @@
+public with sharing class TriggerHandler {
+    public static void handleInsert(List<sObject> newObjList, String objectType) {
+        GentrackCallout.publishPlatformEvent(null, newObjList, objectType, 'insert');
+    }
+ 
+    public static void handleUpdate(List<sObject> oldObjList, List<sObject> newObjList, String objectType) {
+        GentrackCallout.publishPlatformEvent(oldObjList, newObjList, objectType, 'update');
+    }
+ 
+    public static void handleDelete(List<sObject> oldObjList, String objectType) {
+        GentrackCallout.publishPlatformEvent(oldObjList, null, objectType, 'delete');
+    }
+}

@@ -1,0 +1,13 @@
+trigger AccountTrigger on Account (after insert, after update, after delete) {
+    if (Trigger.isUpdate && Trigger.isAfter) {
+        TriggerHandler.handleUpdate(Trigger.old, Trigger.new, 'Account');
+    }
+ 
+    if (Trigger.isInsert && Trigger.isAfter) {
+        TriggerHandler.handleInsert(Trigger.new, 'Account');
+    }
+ 
+    if (Trigger.isDelete && Trigger.isAfter) {
+        TriggerHandler.handleDelete(Trigger.old, 'Account');
+    }
+}

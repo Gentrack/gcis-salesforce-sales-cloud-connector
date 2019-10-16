@@ -1,0 +1,25 @@
+public with sharing class GentrackCallout {
+    public static void publishPlatformEvent(List<sObject> oldObjectList, List<sObject> newObjectList, String objectType, String operationType) {
+        List<Gentrack_Object_Event__e> gentrackObjectEvents = New List<Gentrack_Object_Event__e>();
+        if (operationType == 'delete') {
+            for (sObject obj : oldObjectList) {
+                String oldPayload = JSON.serialize(obj);
+                gentrackObjectEvents.add(new Gentrack_Object_Event__e(Operation_Type__c = operationType, Object_Type__c = objectType, Old_Payload__c = oldPayload));
+            }
+        } else if (operationType == 'insert') {
+            for (sObject obj : newObjectList) {
+                String newPayload = JSON.serialize(obj);
+                gentrackObjectEvents.add(new Gentrack_Object_Event__e(Operation_Type__c = operationType, Object_Type__c = objectType, New_Payload__c = newPayload));
+            }
+        } else if (operationType == 'update') {
+            for (integer i = 0; i < newObjectList.size(); i++) {
+                String oldPayload = JSON.serialize(oldObjectList.get(i));
+                String newPayload = JSON.serialize(newObjectList.get(i));
+                gentrackObjectEvents.add(new Gentrack_Object_Event__e(Operation_Type__c = operationType, Object_Type__c = objectType, Old_Payload__c = oldPayload, New_Payload__c = newPayload));
+            }
+        }
+        if (gentrackObjectEvents.size() > 0) {
+            List<Database.SaveResult> results = EventBus.publish(gentrackObjectEvents);
+        }
+    }
+}

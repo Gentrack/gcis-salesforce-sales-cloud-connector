@@ -1,0 +1,13 @@
+trigger AccountContactRelationTrigger on AccountContactRelation (after insert, after update, after delete) {
+    if (Trigger.isUpdate && Trigger.isAfter) {
+        TriggerHandler.handleUpdate(Trigger.old, Trigger.new, 'AccountContactRelation');
+    }
+ 
+    if (Trigger.isInsert && Trigger.isAfter) {
+        TriggerHandler.handleInsert(Trigger.new, 'AccountContactRelation');
+    }
+ 
+    if (Trigger.isDelete && Trigger.isAfter) {
+        TriggerHandler.handleDelete(Trigger.old, 'AccountContactRelation');
+    }
+}
