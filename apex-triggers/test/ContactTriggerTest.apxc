@@ -1,0 +1,18 @@
+@isTest
+private class ContactTriggerTest {
+    static testMethod void testInsert() {
+        Contact contact = new Contact(LastName='Smith');
+        System.debug('Inserting Contact: ' + Contact.LastName);
+        insert contact;
+        contact = [SELECT LastName, FirstName FROM Contact WHERE Id =:contact.Id];
+        System.debug('Contact inserted: ' + contact.Id + ', ' + contact.LastName);
+        System.assertEquals('Smith', contact.LastName);
+ 
+        contact.FirstName = 'John';
+        System.debug('Updating Contact: ' + contact.LastName);
+        update contact;
+        contact = [SELECT LastName, FirstName FROM Contact WHERE Id =:contact.Id];
+        System.debug('Contact updated: ' + contact.Id + ', ' + contact.LastName);
+        System.assertEquals('John', contact.FirstName);
+    }
+}
