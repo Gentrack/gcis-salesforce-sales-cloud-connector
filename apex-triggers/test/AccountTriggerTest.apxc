@@ -1,0 +1,18 @@
+@isTest
+private class AccountTriggerTest {
+    static testMethod void testInsert() {
+        Account account = new Account(Name='John');
+        System.debug('Inserting Account: ' + account.Name);
+        insert account;
+        account = [SELECT Name FROM Account WHERE Id =:account.Id];
+        System.debug('Account inserted: ' + account.Id + ', ' + account.Name);
+        System.assertEquals('John', account.Name);
+ 
+        account.Name = 'John Smith';
+        System.debug('Updating Account: ' + account.Name);
+        update account;
+        account = [SELECT Name FROM Account WHERE Id =:account.Id];
+        System.debug('Account updated: ' + account.Id + ', ' + account.Name);
+        System.assertEquals('John Smith', account.Name);
+    }
+}
