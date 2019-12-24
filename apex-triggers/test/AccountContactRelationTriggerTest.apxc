@@ -1,0 +1,19 @@
+@isTest
+private class AccountContactRelationTriggerTest {
+    static testMethod void testInsert() {
+        Account account = new Account(Name='John');
+        System.debug('Inserting Account: ' + account.Name);
+        insert account;
+ 
+        Contact contact = new Contact(LastName='Smith', AccountId=account.Id);
+        System.debug('Inserting Contact: ' + Contact.LastName);
+        insert contact;
+ 
+        AccountContactRelation acr = [SELECT Id, AccountId, ContactId, Roles FROM AccountContactRelation WHERE AccountId =:account.Id AND ContactId=:contact.Id];
+        acr.Roles = 'Main';
+        update acr;
+        acr = [SELECT Id, AccountId, ContactId, Roles FROM AccountContactRelation WHERE AccountId =:account.Id AND ContactId=:contact.Id];
+        System.debug('ACR updated: ' + acr.Id + ', ' + acr.Roles);
+        System.assertEquals('Main', acr.Roles);
+    }
+}
