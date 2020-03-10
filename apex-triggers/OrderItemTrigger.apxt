@@ -1,0 +1,26 @@
+@isTest
+private class OrderItemTriggerTest {
+    static testMethod void testInsert() {
+        Account account = new Account(Name='John');
+        System.debug('Inserting Account: ' + account.Name);
+        insert account;
+
+        Product2 product = new Product2(Name = 'Anti-infectives 2007', Family = 'Best Practices', IsActive = true);
+        insert product;
+
+        PricebookEntry standardPrice = new PricebookEntry(Pricebook2Id = Test.getStandardPricebookId(), Product2Id = product.Id, UnitPrice = 1.0, IsActive = true, UseStandardPrice = false);
+        insert standardPrice;
+
+        Pricebook2 pricebook = new Pricebook2(Name = 'Standard Price Book 2009', Description = 'Price Book 2009 Products', IsActive = true);
+        insert pricebook;
+
+        PricebookEntry pricebookEntry = new PricebookEntry(Pricebook2Id=priceBook.Id, Product2Id=product.Id, UnitPrice=1.0, UseStandardPrice=false);
+        insert pricebookEntry;
+
+        Order order = new Order(AccountId=account.Id, Pricebook2Id=pricebook.Id, EffectiveDate=Date.newInstance(2020, 2, 17), Status='Draft');
+        insert order;
+
+        OrderItem orderItem = new OrderItem(OrderId=order.Id, PricebookEntryId=pricebookEntry.id, UnitPrice=1.0, Quantity=1);
+        insert orderItem;
+    }
+}
